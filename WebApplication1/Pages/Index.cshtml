@@ -1,0 +1,187 @@
+@page
+@model WebApplication1.Pages.IndexModel
+@{
+    ViewData["Title"] = "Food Menu Manager";
+}
+
+<div class="min-h-screen" style="background: linear-gradient(135deg, #faf7f2 0%, #f5e6d3 100%);">
+    <!-- Header -->
+    <header class="border-bottom bg-white bg-opacity-50 sticky-top shadow-sm">
+        <div class="container py-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 bg-warning bg-opacity-25 p-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span class="text-warning fw-bold fs-3">???</span>
+                        </div>
+                        <div>
+                            <h1 class="h2 fw-bold mb-1 text-dark">Food Menu Manager</h1>
+                            <p class="text-muted small mb-0">Manage your restaurant menu with ease</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="/MenuItems/Create" class="btn btn-warning btn-lg">
+                        <i class="bi bi-plus-circle"></i> Add New Item
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container py-4">
+        <!-- Search Bar -->
+        <form method="get" class="mb-4" id="filterForm">
+            <div class="position-relative">
+                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                <input type="text" class="form-control ps-5 py-3 rounded-3" 
+                       placeholder="Search menu items..." 
+                       name="SearchTerm" 
+                       value="@Model.SearchTerm"
+                       id="searchInput"
+                       style="border: 2px solid #e9ecef;">
+            </div>
+            <input type="hidden" name="SelectedCategory" id="hiddenCategory" value="@Model.SelectedCategory" />
+        </form>
+
+        <!-- Category Filter Buttons -->
+        <div class="mb-4">
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="button" 
+                        class="btn rounded-pill px-4 py-2 fw-medium category-btn @(Model.SelectedCategory == null ? "btn-warning" : "btn-outline-secondary")" 
+                        data-category="">
+                    All
+                </button>
+                @foreach (var category in Enum.GetValues<WebApplication1.Models.MenuCategory>())
+                {
+                    <button type="button" 
+                            class="btn rounded-pill px-4 py-2 fw-medium category-btn @(Model.SelectedCategory == category ? "btn-warning" : "btn-outline-secondary")" 
+                            data-category="@category">
+                        @category
+                    </button>
+                }
+            </div>
+        </div>
+
+        <!-- Menu Items Grid -->
+        @if (Model.MenuItems.Any())
+        {
+            <div class="row g-4">
+                @foreach (var item in Model.MenuItems)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
+                            @if (!string.IsNullOrEmpty(item.ImagePath))
+                            {
+                                <div class="ratio ratio-16x9">
+                                    <img src="@item.ImagePath" class="card-img-top object-fit-cover" alt="@item.Name">
+                                </div>
+                            }
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h5 class="card-title fw-bold mb-2">@item.Name</h5>
+                                        <span class="badge bg-@GetCategoryColor(item.Category) rounded-pill">@item.Category</span>
+                                    </div>
+                                    <div class="text-end">
+                                        <h4 class="text-warning fw-bold mb-0 peso-sign">?@item.Price.ToString("F2")</h4>
+                                    </div>
+                                </div>
+                                
+                                <p class="card-text text-muted small">@item.Description</p>
+                                
+                                <div class="d-flex gap-2 mt-3">
+                                    <a href="/MenuItems/Details/@item.Id" class="btn btn-outline-primary btn-sm flex-fill">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                    <a href="/MenuItems/Edit/@item.Id" class="btn btn-outline-secondary btn-sm flex-fill">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                    <a href="/MenuItems/Delete/@item.Id" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-search text-muted" style="font-size: 4rem;"></i>
+                <h4 class="text-muted mt-3">No menu items found</h4>
+                <p class="text-muted">Try adjusting your search criteria or add a new menu item.</p>
+                <a href="/MenuItems/Create" class="btn btn-warning btn-lg mt-3">
+                    <i class="bi bi-plus-circle"></i> Add Your First Item
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Handle category button clicks
+        document.querySelectorAll('.category-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                // Update hidden input
+                document.getElementById('hiddenCategory').value = this.dataset.category;
+                
+                // Update button states
+                document.querySelectorAll('.category-btn').forEach(function(b) {
+                    b.classList.remove('btn-warning');
+                    b.classList.add('btn-outline-secondary');
+                });
+                this.classList.remove('btn-outline-secondary');
+                this.classList.add('btn-warning');
+                
+                // Submit form
+                document.getElementById('filterForm').submit();
+            });
+        });
+
+        // Auto-submit form when search input changes (with debounce)
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function() {
+                document.getElementById('filterForm').submit();
+            }, 500); // Wait 500ms after user stops typing
+        });
+
+        // Clear search when pressing Escape or Backspace on empty input
+        document.getElementById('searchInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' || (e.key === 'Backspace' && this.value === '')) {
+                this.value = '';
+                document.getElementById('hiddenCategory').value = '';
+                
+                // Reset all buttons to default state
+                document.querySelectorAll('.category-btn').forEach(function(b) {
+                    b.classList.remove('btn-warning');
+                    b.classList.add('btn-outline-secondary');
+                });
+                document.querySelector('.category-btn[data-category=""]').classList.remove('btn-outline-secondary');
+                document.querySelector('.category-btn[data-category=""]').classList.add('btn-warning');
+                
+                window.location.href = '/';
+            }
+        });
+    </script>
+}
+
+@functions {
+    private string GetCategoryColor(WebApplication1.Models.MenuCategory category)
+    {
+        return category switch
+        {
+            WebApplication1.Models.MenuCategory.Appetizers => "success",
+            WebApplication1.Models.MenuCategory.Meals => "warning",
+            WebApplication1.Models.MenuCategory.Desserts => "danger",
+            WebApplication1.Models.MenuCategory.Drinks => "info",
+            _ => "secondary"
+        };
+    }
+}

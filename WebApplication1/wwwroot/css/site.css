@@ -1,0 +1,93 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* Primary orange button styling - white text and icons with higher specificity */
+.btn.btn-warning {
+  color: #ffffff !important;
+}
+
+.btn.btn-warning i {
+  color: #ffffff !important;
+}
+
+.btn.btn-warning:hover {
+  color: #ffffff !important;
+}
+
+.btn.btn-warning:hover i {
+  color: #ffffff !important;
+}
+
+.btn.btn-warning:active {
+  color: #ffffff !important;
+}
+
+.btn.btn-warning:active i {
+  color: #ffffff !important;
+}
+
+.btn.btn-warning:focus {
+  color: #ffffff !important;
+}
+
+.btn.btn-warning:focus i {
+  color: #ffffff !important;
+}
+
+.btn.btn-warning.disabled,
+.btn.btn-warning:disabled {
+  color: #ffffff !important;
+}
+
+.btn.btn-warning.disabled i,
+.btn.btn-warning:disabled i {
+  color: #ffffff !important;
+}
+
+/* Orange header sections - white text for consistency */
+.bg-warning h1,
+.bg-warning h2,
+.bg-warning h3,
+.bg-warning h4,
+.bg-warning h5,
+.bg-warning h6 {
+  color: #ffffff !important;
+}
+
+.card-header.bg-warning h1,
+.card-header.bg-warning h2,
+.card-header.bg-warning h3,
+.card-header.bg-warning h4,
+.card-header.bg-warning h5,
+.card-header.bg-warning h6 {
+  color: #ffffff !important;
+}

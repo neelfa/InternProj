@@ -1,0 +1,92 @@
+@page "/MenuItems/Delete/{id:int}"
+@model WebApplication1.Pages.MenuItems.DeleteModel
+@{
+    ViewData["Title"] = "Delete Menu Item - " + Model.MenuItem.Name;
+}
+
+<div class="min-h-screen" style="background: linear-gradient(135deg, #faf7f2 0%, #f5e6d3 100%);">
+    <div class="container py-5">
+        <!-- Navigation -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Menu</a></li>
+                <li class="breadcrumb-item"><a href="/MenuItems/Details/@Model.MenuItem.Id" class="text-decoration-none">@Model.MenuItem.Name</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Delete</li>
+            </ol>
+        </nav>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow border-0 rounded-4 border-danger border-opacity-25">
+                    <div class="card-header bg-danger bg-opacity-10 border-0 p-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-3 bg-danger bg-opacity-25 p-2 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-exclamation-triangle text-danger fs-4"></i>
+                            </div>
+                            <div>
+                                <h2 class="h4 fw-bold text-dark mb-1">Confirm Delete</h2>
+                                <p class="text-muted small mb-0">This action cannot be undone</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="alert alert-warning border-0 bg-warning bg-opacity-10" role="alert">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-info-circle text-warning"></i>
+                                <span>Are you sure you want to delete this menu item?</span>
+                            </div>
+                        </div>
+
+                        <!-- Item Preview -->
+                        <div class="card bg-light border-0 mb-4">
+                            <div class="row g-0">
+                                @if (!string.IsNullOrEmpty(Model.MenuItem.ImagePath))
+                                {
+                                    <div class="col-md-4">
+                                        <div class="ratio ratio-1x1">
+                                            <img src="@Model.MenuItem.ImagePath" class="card-img object-fit-cover rounded-start" alt="@Model.MenuItem.Name">
+                                        </div>
+                                    </div>
+                                }
+                                <div class="col-md-@(string.IsNullOrEmpty(Model.MenuItem.ImagePath) ? "12" : "8")">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h5 class="card-title fw-bold mb-2">@Model.MenuItem.Name</h5>
+                                            <h5 class="text-warning fw-bold peso-sign">?@Model.MenuItem.Price.ToString("F2")</h5>
+                                        </div>
+                                        <span class="badge bg-@GetCategoryColor(Model.MenuItem.Category) rounded-pill mb-2">@Model.MenuItem.Category</span>
+                                        <p class="card-text text-muted small">@Model.MenuItem.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form method="post" class="d-flex gap-3">
+                            <a href="/MenuItems/Details/@Model.MenuItem.Id" class="btn btn-outline-secondary flex-fill py-3 rounded-3">
+                                <i class="bi bi-arrow-left"></i> Keep Item
+                            </a>
+                            <button type="submit" class="btn btn-danger flex-fill py-3 rounded-3 fw-semibold">
+                                <i class="bi bi-trash"></i> Delete Forever
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private string GetCategoryColor(WebApplication1.Models.MenuCategory category)
+    {
+        return category switch
+        {
+            WebApplication1.Models.MenuCategory.Appetizers => "success",
+            WebApplication1.Models.MenuCategory.Meals => "warning",
+            WebApplication1.Models.MenuCategory.Desserts => "danger",
+            WebApplication1.Models.MenuCategory.Drinks => "info",
+            _ => "secondary"
+        };
+    }
+}
