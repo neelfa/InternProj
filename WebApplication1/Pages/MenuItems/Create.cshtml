@@ -9,21 +9,37 @@
     <header class="border-bottom bg-white bg-opacity-50 sticky-top shadow-sm">
         <div class="container py-3">
             <div class="row align-items-center">
-                <div class="col-md-6">
+                <div class="col-12 col-md-6 mb-2 mb-md-0">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="rounded-2 bg-warning bg-opacity-20 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                            <span class="text-warning fw-bold fs-5">🍽️</span>
+                        <!-- Minimalist Logo - Crossed Utensils -->
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
+                             style="width: 48px; height: 48px; background: linear-gradient(135deg, #d4723d 0%, #c0672f 100%); box-shadow: 0 2px 6px rgba(212, 114, 61, 0.25);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Crossed Fork and Knife -->
+                                <g transform="rotate(45 12 12)">
+                                    <!-- Fork -->
+                                    <path d="M10 4v16M8 6h4M8 8h4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                </g>
+                                <g transform="rotate(-45 12 12)">
+                                    <!-- Knife -->
+                                    <path d="M14 4v16M13 4h2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                </g>
+                            </svg>
                         </div>
-                        <div>
-                            <h1 class="h4 fw-bold mb-0 text-dark">Food Menu</h1>
-                            <p class="text-muted small mb-0">Manage your restaurant menu</p>
+                        <div class="flex-grow-1">
+                            <h1 class="h4 fw-bold mb-0 text-dark">Food Menu Manager</h1>
+                            <p class="text-muted small mb-0 d-none d-sm-block">Manage your restaurant menu with ease</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 text-end">
-                    <a href="/" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left"></i> Back to Menu
-                    </a>
+                <div class="col-12 col-md-6">
+                    <div class="d-flex justify-content-start justify-content-md-end">
+                        <a href="/" class="btn btn-outline-secondary d-flex align-items-center gap-2 rounded-pill px-3">
+                            <i class="bi bi-arrow-left"></i>
+                            <span class="d-none d-sm-inline">Back to Menu</span>
+                            <span class="d-inline d-sm-none">Back</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -215,4 +231,4 @@
             }
         });
     </script>
-}
+}}
